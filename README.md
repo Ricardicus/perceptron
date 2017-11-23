@@ -12,6 +12,7 @@ For regression problems that is: 'linear' activation and 'square_sum' cost.
 For binary classification problems that is: 'sigmoid' and 'cross_entropy'. 
 
 # Note
-Parameters such as learning rate depends a lot on the data it is training
-on and should be tuned according to the way it performs. If the loss function
-is rising, a too large learning rate is typically in use. Lower it in that case. 
+Setting the correct value of parameters such as learning rate is depending
+on the problem and the data it is training on. Parameters should be tuned 
+according to the way it performs. For example if the loss function is rising, 
+a too large  learning rate is typically in use. Lower it in that case. 
