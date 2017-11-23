@@ -209,7 +209,7 @@ if __name__=="__main__":
 
 	# Looks great!
 	plot_this(X, Y, Y_aprx)
-
+	
 	
 	# A classificaton problem [x1,x2] -> y ≤ {0,1} where 0 -> blue, 1 -> red
 	X = []
@@ -230,7 +230,7 @@ if __name__=="__main__":
 		X.append(np.array([[np.random.randn(1)[0] + mux2, np.random.randn(1)[0] + muy2 ]]).T)
 		Y.append(np.array([[0.]]))
 
-	m = train(X, Y, sigmoid, cross_entropy, [10, 10, 10], 5000, 0.0001, TRAIN_ADAM_GRADIENT_DESCENT)
+	m = train(X, Y, sigmoid, cross_entropy, [10, 10, 10], 5000, 0.00001, TRAIN_ADAM_GRADIENT_DESCENT)
 
 	# The grid, for which the decision boundary can be shown
 	X_decision = []
@@ -238,7 +238,7 @@ if __name__=="__main__":
 		for yy in np.arange(-4, 4, 0.05):
 			X_decision.append(np.array([[xx , yy]]).T)
 
-	Y_decision = output(X_show, m, 3, sigmoid)
+	Y_decision = output(X_decision, m, 3, sigmoid)
 
 	# Looks great!
 	plot_scatter_and_line(X, Y, X_decision, Y_decision,0.04)	
