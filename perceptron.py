@@ -230,7 +230,7 @@ if __name__=="__main__":
 		X.append(np.array([[np.random.randn(1)[0] + mux2, np.random.randn(1)[0] + muy2 ]]).T)
 		Y.append(np.array([[0.]]))
 
-	m = train(X, Y, sigmoid, cross_entropy, [10, 10, 10], 5000, 0.00001, TRAIN_ADAM_GRADIENT_DESCENT)
+	m = train(X, Y, sigmoid, cross_entropy, [100, 100, 100], 5000, 0.0001, TRAIN_ADAM_GRADIENT_DESCENT)
 
 	# The grid, for which the decision boundary can be shown
 	X_decision = []
