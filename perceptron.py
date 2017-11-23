@@ -5,11 +5,12 @@ from plotter import *
 from layers import *
 
 # 	This program is a doodle program that
-#	trains a 4 layered (3 hidden layers) perceptron
-#	for regression of a function.
+#	trains a  multiple layerd perceptron
+#	for regression and binary classification problems.
 #	In the main function I successfully train the perceptron
-#	on a sinosiodal function.
-#
+#	to approximate a sinosiodal function and also do 
+# 	a test of binary clasisfication that work ok!
+# 	Author: Ricardicus
 
 TRAIN_GRADIENT_DESCENT=1
 TRAIN_ADAM_GRADIENT_DESCENT=2
@@ -39,10 +40,8 @@ def gradient_decent(model, alpha, grad):
 		model[k] -= alpha * grad[k]
 
 def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  iterations=1000, learning_rate=0.001, optimizer=TRAIN_GRADIENT_DESCENT):
-	# This is a very simple implementation of a 3 layered perceptron, doing this to test
-	# how the multi-layered perceptron can be used for regression problems
-
-	# neurns in one hidden layer is equal to H1
+	# This is a very simple implementation of a len(hidden_layers) layered perceptron, doing this to test
+	# how the multi-layered perceptron can be used for regression/classification problems
 
 	# this net operates with multiple input => mutiple output
 	RI = len(X[0])
@@ -198,13 +197,13 @@ if __name__=="__main__":
 	# Test set 1: A sinosoidal of amplitude 'A'
 	X = []
 	Y = []
-
+	
 	A = 10
 	for i in range(100):
 		X.append(np.array([[i*np.pi/20.0]]))
 		Y.append(np.array([[A * np.sin(i*np.pi/20.0)]]))
 
-	model = train(X, Y, linear, square_sum, [10, 10, 10], 40000)
+	model = train(X, Y, linear, square_sum, [10, 10, 10], 40000, 0.001, TRAIN_ADAM_GRADIENT_DESCENT)
 
 	Y_aprx = output(X, model, 3, linear)
 
@@ -231,7 +230,7 @@ if __name__=="__main__":
 		X.append(np.array([[np.random.randn(1)[0] + mux2, np.random.randn(1)[0] + muy2 ]]).T)
 		Y.append(np.array([[0.]]))
 
-	m = train(X, Y, sigmoid, cross_entropy, [10, 10, 10], 4000, 0.0001, TRAIN_ADAM_GRADIENT_DESCENT)
+	m = train(X, Y, sigmoid, cross_entropy, [10, 10, 10], 4000, 0.00001, TRAIN_ADAM_GRADIENT_DESCENT)
 
 	# The grid, for which the decision boundary can be shown
 	X_show = []
