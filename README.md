@@ -1,6 +1,6 @@
 # Perceptron
-A multi layered perceptron in python!
-It can to regression and binary classification.
+A multilayered perceptron artificial neural network in python!
+It can to regression and binary classification today.
 I might extend it further in the future to make
 multiple label classification also!
 
