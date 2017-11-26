@@ -11,6 +11,10 @@ activation and what cost function to use.
 For regression problems that is: 'linear' activation and 'square_sum' cost.
 For binary classification problems that is: 'sigmoid' and 'cross_entropy'. 
 
+# Examples
+
+![Binary classification](gauss_classifier_H100-100-100-10-10.png?raw=true "Binary Classification")
+
 # Note
 Setting the correct value of parameters such as learning rate is depending
 on the problem and the data it is training on. Parameters should be tuned 
