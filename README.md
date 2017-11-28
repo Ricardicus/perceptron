@@ -7,7 +7,8 @@ multiple label classification also!
 # Train
 Define your own model by defining the 'hidden_layers' list. 
 Each entry will define a hidden layer and the number of hidden nodes it has.
-Also in the last hidden-output layer one can determine what 
+
+In the last hidden-output layer one can determine what 
 activation and what cost function to use.
 The following configurations are recommended:
 
