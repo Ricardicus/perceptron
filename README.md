@@ -4,10 +4,39 @@ It can to regression and binary classification today.
 I might extend it further in the future to make
 multiple label classification also!
 
-# train
+# Train
 One can define the number of layers in the 'hidden_layers' vector.
 Also in the last hidden-output layer one can determine what 
 activation and what cost function to use.
+The following configurations are recommended:
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Hidden-output layer activation</th>
+      <th>Error function</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Regression</td>
+      <td>'linear'</td>
+      <td>'square sum'</td>   
+    </tr>
+    <tr>
+      <td>Binary classification</td>
+      <td>'sigmoid'</td>
+      <td>'binary_crossentropy'</td>
+    </tr>
+    <tr>
+      <td>Multiple classes classification</td>
+      <td>'softmax'</td>
+      <td>'crossentropy'</td>
+    </tr>
+  </tbody>
+</table>
+  
 For regression problems that is: 'linear' activation and 'square_sum' cost.
 For binary classification problems that is: 'sigmoid' and 'cross_entropy'. 
 
