@@ -130,7 +130,7 @@ def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  i
 				# all the layers to get the gradients 
 				while ( p >= 0 ):
 
-					if ( p == len(hidden_layers) and not ( hidden_output_layer_activation == sigmoid and loss_function == cross_entropy) ):
+					if ( p == len(hidden_layers) and not ( hidden_output_layer_activation == sigmoid and loss_function == binary_crossentropy) ):
 						yb = hidden_output_layer_activation(yb, yb, False)
 					else:
 						yb = tanh(ys[p+1], yb, False)
@@ -195,6 +195,7 @@ if __name__=="__main__":
 
 	
 	# Test set 1: A sinosoidal of amplitude 'A'
+
 	X = []
 	Y = []
 	
@@ -230,18 +231,18 @@ if __name__=="__main__":
 		X.append(np.array([[np.random.randn(1)[0] + mux2, np.random.randn(1)[0] + muy2 ]]).T)
 		Y.append(np.array([[0.]]))
 
-	m = train(X, Y, sigmoid, cross_entropy, [100, 100, 100], 5000, 0.0001, TRAIN_ADAM_GRADIENT_DESCENT)
+	m = train(X, Y, sigmoid, binary_crossentropy, [100, 100, 100, 10, 10], 30000, 0.00001, TRAIN_ADAM_GRADIENT_DESCENT)
 
 	# The grid, for which the decision boundary can be shown
 	X_decision = []
-	for xx in np.arange(-4, 4, 0.05):
-		for yy in np.arange(-4, 4, 0.05):
+	for xx in np.arange(-4, 4, 0.01):
+		for yy in np.arange(-4, 4, 0.01):
 			X_decision.append(np.array([[xx , yy]]).T)
 
-	Y_decision = output(X_decision, m, 3, sigmoid)
+	Y_decision = output(X_decision, m, 5, sigmoid)
 
 	# Looks great!
-	plot_scatter_and_line(X, Y, X_decision, Y_decision,0.04)	
+	plot_scatter_and_line(X, Y, X_decision, Y_decision,0.02)	
 	
 	"""
 	# Regression test set 2: a polynomial function

@@ -19,7 +19,6 @@ def fully_connected(x, W, b, forward = True):
 
 def sigmoid(x, dldx=1., forward = True):
 	if ( forward ):
-#		print("sigmoid input x: " + str(x))
 		return 1.0 / (1.0 + np.exp(-x))
 	else:
 		return (1.0 - x) * x * dldx
@@ -50,10 +49,8 @@ def linear(x, dldx=1., Forward=True):
 def exp_running_avg(running, new, gamma=.9):
 	return gamma * running + (1. - gamma) * new
 
-def cross_entropy(y,d, Forward=True, SigmoidActivation=False):
+def binary_crossentropy(y,d, Forward=True, SigmoidActivation=False):
 	if ( Forward ):
-#		print("cross entropy froward input y: " + str(y))
-#		print("d: " + str(d))
 		if ( d == 1. ):
 			return -1 * np.sum(np.log(y))
 		else:
