@@ -123,15 +123,15 @@ def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  i
 					loss = loss * (1.0-loss_low_pass) + loss_low_pass*np.sum(l)
 
 				# single backward step
-				yb = loss_function(y, Y[i], False, hidden_output_layer_activation == sigmoid)
+				yb = loss_function(y, Y[i], False, hidden_output_layer_activation)
 
 				p = len(hidden_layers) 
 				# Backward propagating the error back through 
 				# all the layers to get the gradients 
 				while ( p >= 0 ):
 
-					if ( p == len(hidden_layers) and not ( hidden_output_layer_activation == sigmoid and loss_function == binary_crossentropy) ):
-						yb = hidden_output_layer_activation(yb, yb, False)
+					if ( p == len(hidden_layers) and not ( (hidden_output_layer_activation == sigmoid and loss_function == binary_crossentropy) or (hidden_output_layer_activation == softmax and loss_function == crossentropy ))):
+						yb = hidden_output_layer_activation(yb, yb, False) # Skipping this part for binary or multiple classes classification
 					else:
 						yb = tanh(ys[p+1], yb, False)
 
@@ -190,91 +190,3 @@ def output(X, model, number_of_layers, hidden_output_layer_activation):
 		Y.append(y)
 
 	return Y
-
-if __name__=="__main__":
-
-	
-	# Test set 1: A sinosoidal of amplitude 'A'
-
-	X = []
-	Y = []
-	
-	A = 10
-	for i in range(100):
-		X.append(np.array([[i*np.pi/20.0]]))
-		Y.append(np.array([[A * np.sin(i*np.pi/20.0)]]))
-
-	model = train(X, Y, linear, square_sum, [10, 10, 10], 40000, 0.001, TRAIN_ADAM_GRADIENT_DESCENT)
-
-	Y_aprx = output(X, model, 3, linear)
-
-	# Looks great!
-	plot_this(X, Y, Y_aprx)
-	
-	
-	# A classificaton problem [x1,x2] -> y ≤ {0,1} where 0 -> blue, 1 -> red
-	X = []
-	Y = []
-	
-	A = 10
-
-	mux1 = 1.
-	muy1 = 1.
-	for i in range(50):
-		X.append(np.array([[np.random.randn(1)[0] + mux1, np.random.randn(1)[0] + muy1 ]]).T)
-		Y.append(np.array([[1]]))
-	
-	mux2 = 1
-	muy2 = -1.
-
-	for i in range(50):
-		X.append(np.array([[np.random.randn(1)[0] + mux2, np.random.randn(1)[0] + muy2 ]]).T)
-		Y.append(np.array([[0.]]))
-
-	m = train(X, Y, sigmoid, binary_crossentropy, [100, 100, 100, 10, 10], 30000, 0.00001, TRAIN_ADAM_GRADIENT_DESCENT)
-
-	# The grid, for which the decision boundary can be shown
-	X_decision = []
-	for xx in np.arange(-4, 4, 0.01):
-		for yy in np.arange(-4, 4, 0.01):
-			X_decision.append(np.array([[xx , yy]]).T)
-
-	Y_decision = output(X_decision, m, 5, sigmoid)
-
-	# Looks great!
-	plot_scatter_and_line(X, Y, X_decision, Y_decision,0.02)	
-	
-	"""
-	# Regression test set 2: a polynomial function
-	X = []
-	Y = []
-	for i in range(100):
-		x = i/100.0 * 4 - 2
-		y = 20*(x - 0.5)**2 / (1.0 + x**2)
-		X.append(np.array([[x]]))
-		Y.append(np.array([[y]]))
-
-	model = train(X, Y, linear, square_sum, [10, 10, 10], 5000)
-
-	Y_aprx = output(X, model, 3, linear)
-
-	# Looks great also!
-	plot_this(X, Y, Y_aprx)
-	
-	# Test set 3: A sinosoidal of amplitude 'A' + a gaussian noise , controlled by 'e'
-	X = []
-	Y = []
-
-	A = 10
-	e = 4.0
-	for i in range(10):
-		X.append(np.array([[i*np.pi/20.0]]))
-		Y.append(np.array([[A * np.sin(i*np.pi/20.0) + e * np.random.randn(1,1)[0][0]]]))
-
-	m = train(X, Y, linear, square_sum, [10, 10, 10], 10000, 0.00001)
-
-	Y_aprx = output(X, model, 3, linear)
-
-	# Looks good!
-	plot_this(X, Y, Y_aprx)
-	"""	

@@ -29,7 +29,7 @@ def tanh(x,dldx=1., forward = True):
 	else:
 		return (1.0 - x**2) * dldx
 
-def square_sum(x,d,forward=True, SigmoidActivation=False):
+def square_sum(x,d,forward=True, activation_function=None):
 	if ( forward ):
 		# forward propagation (calculating loss)
 		N = len(x)
@@ -46,10 +46,19 @@ def linear(x, dldx=1., Forward=True):
 	else: 
 		return dldx
 
+def softmax(x, dldx=1., Forward=True):
+	if ( Forward ):
+		y = np.exp(x)
+		s = np.sum(y)
+		y /= s
+		return y
+	else: 
+		return dldx # only works for 'crossentropy' cost function, and it is taken care of there already.. why use softmax otherwise, right?
+
 def exp_running_avg(running, new, gamma=.9):
 	return gamma * running + (1. - gamma) * new
 
-def binary_crossentropy(y,d, Forward=True, SigmoidActivation=False):
+def binary_crossentropy(y,d, Forward=True, activation_function=None):
 	if ( Forward ):
 		if ( d == 1. ):
 			return -1 * np.sum(np.log(y))
@@ -57,7 +66,7 @@ def binary_crossentropy(y,d, Forward=True, SigmoidActivation=False):
 			return -1 * np.log(1-y)
 	else:  
 
-		if ( SigmoidActivation ):
+		if ( activation_function == sigmoid ):
 			return (y-d)
 
 		d = y * (y - 1)
@@ -67,3 +76,25 @@ def binary_crossentropy(y,d, Forward=True, SigmoidActivation=False):
 		dldy = (y-d) / d
 
 		return dldy
+
+
+def crossentropy(y,d, Forward=True, activation_function=None):
+	if ( Forward ):
+		return - np.sum(np.log(y) * d)
+	else:  
+
+		dldy = (y-d)
+
+		if ( activation_function == softmax ):	
+			return dldy	
+		else :
+
+			d = y * (y - 1)
+			try:
+				dldy /= d
+			except:
+				print("Multiple classes classification using crossentropy does not work for activation function: " + str(activation_function))
+				raise
+
+		return dldy
+
