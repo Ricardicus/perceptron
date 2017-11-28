@@ -37,8 +37,7 @@ The following configurations are recommended:
   </tbody>
 </table>
   
-For regression problems that is: 'linear' activation and 'square_sum' cost.
-For binary classification problems that is: 'sigmoid' and 'cross_entropy'. 
+The module 'examples.py' contains traning examples of each of these problems. Note that both the X-values and the Y-values are to be lists of numpy column vectors. 
 
 # Examples 
 
