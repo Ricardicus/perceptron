@@ -167,7 +167,7 @@ def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  i
 
 	return model
 
-def output(X, model, number_of_layers, hidden_output_layer_activation):
+def output(X, model, number_of_layers, hidden_output_layer_activation, activation=tanh):
 
 	Y = []
 
@@ -181,7 +181,7 @@ def output(X, model, number_of_layers, hidden_output_layer_activation):
 			y = fully_connected(y, model["A"+str(p)], model["b"+str(p)])
 			
 			if ( p != number_of_layers ):
-				y = tanh(y)
+				y = activation(y)
 			else:
 				y = hidden_output_layer_activation(y)
 
