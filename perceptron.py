@@ -39,7 +39,7 @@ def gradient_decent(model, alpha, grad):
 	for k in grad:
 		model[k] -= alpha * grad[k]
 
-def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  iterations=1000, learning_rate=0.001, optimizer=TRAIN_GRADIENT_DESCENT):
+def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  iterations=1000, learning_rate=0.001, optimizer=TRAIN_GRADIENT_DESCENT, interlayer_activation=tanh):
 	# This is a very simple implementation of a len(hidden_layers) layered perceptron, doing this to test
 	# how the multi-layered perceptron can be used for regression/classification problems
 
@@ -106,7 +106,7 @@ def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  i
 					y = fully_connected(y, model["A"+str(p)], model["b"+str(p)])
 					
 					if ( p != len(hidden_layers) ):
-						y = tanh(y)
+						y = interlayer_activation(y)
 					else:
 						y = hidden_output_layer_activation(y)
 
