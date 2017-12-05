@@ -23,6 +23,12 @@ def sigmoid(x, dldx=1., forward = True):
 	else:
 		return (1.0 - x) * x * dldx
 
+def relu(x, dldx=1., forward = True):
+	if ( forward ):
+		return np.maximum(x, 0, x)
+	else:
+		return 1. * (x > 1) * dldx
+
 def tanh(x,dldx=1., forward = True):
 	if ( forward ):
 		return np.tanh(x)
