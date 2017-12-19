@@ -38,7 +38,6 @@ def tanh(x,dldx=1., forward = True):
 def square_sum(x,d,forward=True, activation_function=None):
 	if ( forward ):
 		# forward propagation (calculating loss)
-		N = len(x)
 		y = (1.0 / 2.0) * np.sum( (d-x) ** 2 )
 		return y
 	else:
