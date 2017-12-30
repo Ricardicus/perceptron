@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 
 from plotter import *
 from layers import *
+from regularize import *
 
 # 	This program is a doodle program that
 #	trains a  multiple layerd perceptron
 #	for regression and binary classification problems.
-#	In the main function I successfully train the perceptron
+#	In the 'examples.py' module I successfully train the perceptron
 #	to approximate a sinosiodal function and also do 
 # 	a test of binary clasisfication that work ok!
 # 	Author: Ricardicus
@@ -39,7 +40,7 @@ def gradient_decent(model, alpha, grad):
 	for k in grad:
 		model[k] -= alpha * grad[k]
 
-def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  iterations=1000, learning_rate=0.001, optimizer=TRAIN_GRADIENT_DESCENT, interlayer_activation=tanh):
+def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  iterations=1000, learning_rate=0.001, optimizer=TRAIN_GRADIENT_DESCENT, interlayer_activation=tanh, regularizer=regularize_L2_norm, regularizer_coeff=0.):
 	# This is a very simple implementation of a len(hidden_layers) layered perceptron, doing this to test
 	# how the multi-layered perceptron can be used for regression/classification problems
 
@@ -115,12 +116,15 @@ def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  i
 
 					p += 1
 
-				l = loss_function(y, Y[i])
+				l = np.sum(loss_function(y, Y[i]))
+				
+				if ( regularizer_coeff > 0. ):
+						l += regularizer(True, model, regularizer_coeff)
 
 				if n == 0:
-					loss = np.sum(l)
+					loss = l
 				else:
-					loss = loss * (1.0-loss_low_pass) + loss_low_pass*np.sum(l)
+					loss = loss * (1.0-loss_low_pass) + loss_low_pass*l
 
 				# single backward step
 				yb = loss_function(y, Y[i], False, hidden_output_layer_activation)
@@ -148,11 +152,18 @@ def train(X, Y, hidden_output_layer_activation, loss_function, hidden_layers,  i
 			for key in grads:
 				grads[key] /= (q+1)
 
+			if ( regularizer_coeff > 0. ):
+				regularizer_contribution = regularizer(False, model, regularizer_coeff)
+				for key in regularizer_contribution:
+					grads[key] += regularizer_contribution[key]
+
 			# gradient decent
 			if ( optimizer == TRAIN_GRADIENT_DESCENT):
 				gradient_decent(model, learning_rate, grads)
 			elif (optimizer == TRAIN_ADAM_GRADIENT_DESCENT):
 				adam_update(model, learning_rate, M, R, grads, n+1)
+
+
 
 		if ( optimizer == TRAIN_GRADIENT_DESCENT ):
 			learning_rate = initial_learning_rage / (1.0 + n/ learning_rate_decrease)
