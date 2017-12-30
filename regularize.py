@@ -26,7 +26,7 @@ def regularize_L1_norm(compute_loss = True, model = {}, lmbd=0.0001):
 		return gradient_contribution
 
 def regularize_L2_norm(compute_loss = True, model = {}, lmbd=0.0001):
-	print("HEJ")
+
 	if ( compute_loss ):
 		# contribution to cost function
 		cost = 0.
